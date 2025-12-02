@@ -6,17 +6,28 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.platepal.ui.screens.details.DetailsScreen
 import com.example.platepal.ui.screens.home.HomeScreen
+import com.example.platepal.ui.screens.login.LoginScreen
 import com.example.platepal.ui.screens.profile.ProfileScreen
 
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    startDestination: String = Screen.Home.route
+    startDestination: String = Screen.Login.route
 ) {
     NavHost(
         navController = navController,
         startDestination = startDestination
     ) {
+        composable(route = Screen.Login.route) {
+            LoginScreen(
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Login.route) { inclusive = true }
+                    }
+                }
+            )
+        }
+
         composable(route = Screen.Home.route) {
             HomeScreen(
                 onNavigateToDetails = {
