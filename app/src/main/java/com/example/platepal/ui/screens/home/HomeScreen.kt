@@ -30,7 +30,7 @@ fun HomeScreen(
 
     val recipes = listOf(
         Recipe(
-            name = "Frango assado",
+            name = "Francesinha vegan",
             difficulty = "Médio",
             time = "25Min",
             rating = 5,
@@ -44,7 +44,7 @@ fun HomeScreen(
             calories = 400
         ),
         Recipe(
-            name = "Carne assada",
+            name = "Carne grelhada",
             difficulty = "Médio",
             time = "30Min",
             rating = 5,
@@ -107,8 +107,8 @@ fun HomeScreen(
                         onClick = { /* Handle category click */ }
                     )
                     CategoryButton(
-                        text = "Frango",
-                        emoji = "🍗",
+                        text = "Vegan",
+                        emoji = "🥙",
                         onClick = { /* Handle category click */ }
                     )
                 }

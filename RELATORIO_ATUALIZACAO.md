@@ -74,7 +74,7 @@ fun PlatePalSearchBar(
 **Categorias implementadas:**
 1. 🥩 Carne
 2. 🐟 Peixe
-3. 🍗 Frango
+3. 🍗 Vegan
 
 **Funcionalidade:**
 ```kotlin

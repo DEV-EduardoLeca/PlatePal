@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.ui.res.painterResource
+import com.example.platepal.R
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -73,9 +75,11 @@ fun PlatePalSearchBar(
             onClick = onMicClick,
             modifier = Modifier.size(40.dp)
         ) {
-            Text(
-                text = "🎤",
-                fontSize = 24.sp
+            Icon(
+                painter = painterResource(id = R.drawable.ic_microphone),
+                contentDescription = "Comando de voz",
+                tint = Color.Gray,
+                modifier = Modifier.size(24.dp)
             )
         }
     }
