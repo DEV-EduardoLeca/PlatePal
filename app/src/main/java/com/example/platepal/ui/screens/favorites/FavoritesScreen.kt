@@ -1,4 +1,4 @@
-package com.example.platepal.ui.screens.home
+package com.example.platepal.ui.screens.favorites
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,24 +13,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.platepal.ui.components.CategoryButton
 import com.example.platepal.ui.components.PlatePalBottomNavigationBar
-import com.example.platepal.ui.components.PlatePalSearchBar
 import com.example.platepal.ui.components.Recipe
 import com.example.platepal.ui.components.RecipeCard
 import com.example.platepal.ui.theme.CoralBackground
 
 @Composable
-fun HomeScreen(
+fun FavoritesScreen(
+    onNavigateToHome: () -> Unit,
     onNavigateToDetails: () -> Unit,
-    onNavigateToProfile: () -> Unit,
     onNavigateToAddRecipe: () -> Unit,
-    onNavigateToFavorites: () -> Unit,
+    onNavigateToProfile: () -> Unit,
     onLogout: () -> Unit
 ) {
-    var selectedBottomNavIndex by remember { mutableIntStateOf(0) }
+    var selectedBottomNavIndex by remember { mutableIntStateOf(1) } // Favoritos selecionado
 
-    val recipes = listOf(
+    // Lista de receitas favoritas (simulada - depois pode vir de um ViewModel/Database)
+    val favoriteRecipes = listOf(
         Recipe(
             name = "Francesinha vegan",
             difficulty = "Médio",
@@ -46,11 +45,11 @@ fun HomeScreen(
             calories = 400
         ),
         Recipe(
-            name = "Carne grelhada",
-            difficulty = "Médio",
-            time = "30Min",
+            name = "Salada Caesar",
+            difficulty = "Fácil",
+            time = "15Min",
             rating = 5,
-            calories = 500
+            calories = 300
         )
     )
 
@@ -61,7 +60,7 @@ fun HomeScreen(
                 onItemSelected = { index ->
                     selectedBottomNavIndex = index
                     when (index) {
-                        1 -> onNavigateToFavorites() // Favoritos
+                        0 -> onNavigateToHome() // Home
                         2 -> onNavigateToAddRecipe() // Adicionar Receita
                         3 -> onNavigateToProfile() // Perfil
                         4 -> onLogout() // Logout
@@ -79,7 +78,7 @@ fun HomeScreen(
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Plant Icon
+            // Ícone de planta
             item {
                 Box(
                     modifier = Modifier.fillMaxWidth(),
@@ -92,42 +91,10 @@ fun HomeScreen(
                 }
             }
 
-            // Search Bar
-            item {
-                PlatePalSearchBar(
-                    placeholder = "Pesquisa",
-                    onMicClick = { /* Handle mic click */ }
-                )
-            }
-
-            // Category Buttons
-            item {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    CategoryButton(
-                        text = "Carne",
-                        emoji = "🥩",
-                        onClick = { /* Handle category click */ }
-                    )
-                    CategoryButton(
-                        text = "Peixe",
-                        emoji = "🐟",
-                        onClick = { /* Handle category click */ }
-                    )
-                    CategoryButton(
-                        text = "Vegan",
-                        emoji = "🥙",
-                        onClick = { /* Handle category click */ }
-                    )
-                }
-            }
-
-            // Title
+            // Título
             item {
                 Text(
-                    text = "Top 10 Receitas da Semana",
+                    text = "Minhas Receitas Favoritas",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
@@ -135,12 +102,45 @@ fun HomeScreen(
                 )
             }
 
-            // Recipe Cards
-            items(recipes) { recipe ->
-                RecipeCard(
-                    recipe = recipe,
-                    onClick = onNavigateToDetails
-                )
+            // Verificar se há favoritos
+            if (favoriteRecipes.isEmpty()) {
+                item {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 48.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            Text(
+                                text = "❤️",
+                                fontSize = 64.sp
+                            )
+                            Text(
+                                text = "Nenhuma receita favorita ainda",
+                                fontSize = 18.sp,
+                                color = Color.White,
+                                fontWeight = FontWeight.Medium
+                            )
+                            Text(
+                                text = "Adicione receitas aos favoritos para vê-las aqui",
+                                fontSize = 14.sp,
+                                color = Color.White.copy(alpha = 0.7f)
+                            )
+                        }
+                    }
+                }
+            } else {
+                // Cards de receitas favoritas
+                items(favoriteRecipes) { recipe ->
+                    RecipeCard(
+                        recipe = recipe,
+                        onClick = onNavigateToDetails
+                    )
+                }
             }
 
             // Bottom padding

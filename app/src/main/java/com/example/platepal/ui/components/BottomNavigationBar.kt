@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.*
@@ -23,11 +24,11 @@ fun PlatePalBottomNavigationBar(
     onItemSelected: (Int) -> Unit = {}
 ) {
     val items = listOf(
-        Icons.Default.Home,
-        Icons.Default.Favorite,
-        Icons.Default.Add,
-        Icons.Default.Done,
-        Icons.Default.Menu
+        Icons.Default.Home,                    // Casa - Home
+        Icons.Default.Favorite,                // Coração - Favoritos
+        Icons.Default.Add,                     // + - Adicionar Receita
+        Icons.Default.Person,                  // Bonequinho - Perfil
+        Icons.AutoMirrored.Filled.ExitToApp    // Logout
     )
 
     Box(

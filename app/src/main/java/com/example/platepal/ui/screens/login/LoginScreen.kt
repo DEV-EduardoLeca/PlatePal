@@ -19,7 +19,8 @@ import com.example.platepal.ui.theme.CoralDark
 
 @Composable
 fun LoginScreen(
-    onNavigateToHome: () -> Unit
+    onNavigateToHome: () -> Unit,
+    onNavigateToRegister: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -83,7 +84,7 @@ fun LoginScreen(
 
             // Botão Inscreva-se
             Button(
-                onClick = { /* Não faz nada */ },
+                onClick = onNavigateToRegister,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)

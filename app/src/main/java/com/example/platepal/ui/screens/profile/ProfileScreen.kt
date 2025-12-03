@@ -1,132 +1,199 @@
 package com.example.platepal.ui.screens.profile
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.platepal.ui.components.PlatePalButton
-import com.example.platepal.ui.components.PlatePalCard
-import com.example.platepal.ui.components.PlatePalTextField
-import com.example.platepal.ui.components.PlatePalTopBar
+import androidx.compose.ui.unit.sp
+import com.example.platepal.ui.components.PlatePalBottomNavigationBar
+import com.example.platepal.ui.theme.CoralBackground
+import com.example.platepal.ui.theme.CoralDark
 
 @Composable
 fun ProfileScreen(
-    onNavigateBack: () -> Unit
+    onNavigateToHome: () -> Unit,
+    onNavigateToFavorites: () -> Unit,
+    onNavigateToAddRecipe: () -> Unit,
+    onLogout: () -> Unit
 ) {
-    var name by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
+    var selectedBottomNavIndex by remember { mutableIntStateOf(3) } // Perfil selecionado
 
     Scaffold(
-        topBar = {
-            PlatePalTopBar(
-                title = "Perfil",
-                onNavigationClick = onNavigateBack
+        bottomBar = {
+            PlatePalBottomNavigationBar(
+                selectedIndex = selectedBottomNavIndex,
+                onItemSelected = { index ->
+                    selectedBottomNavIndex = index
+                    when (index) {
+                        0 -> onNavigateToHome() // Home
+                        1 -> onNavigateToFavorites() // Favoritos
+                        2 -> onNavigateToAddRecipe() // Adicionar Receita
+                        4 -> onLogout() // Logout
+                    }
+                }
             )
-        }
+        },
+        containerColor = CoralBackground
     ) { paddingValues ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .background(CoralBackground)
+                .padding(paddingValues)
+                .padding(horizontal = 24.dp)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            item {
+            Spacer(modifier = Modifier.height(24.dp))
+            // Botão de voltar no topo direito
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Spacer(modifier = Modifier.width(48.dp))
+
+                // Ícone de planta centralizado
                 Text(
+                    text = "🌱",
+                    fontSize = 40.sp
+                )
+
+                // Botão de voltar
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFF8B5A5A))
+                        .clickable { onNavigateToHome() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Voltar",
+                        tint = Color.White,
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Avatar do usuário
+            Box(
+                modifier = Modifier
+                    .size(120.dp)
+                    .clip(CircleShape)
+                    .background(Color.White)
+                    .border(4.dp, Color.White, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                // Aqui você pode adicionar uma imagem real do usuário
+                // Por enquanto, vou usar um círculo com as iniciais
+                Text(
+                    text = "👤",
+                    fontSize = 60.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Nome do usuário
+            Text(
+                text = "Marcio_22",
+                fontSize = 24.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            // Menu de opções
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                ProfileMenuItem(
                     text = "Informações Pessoais",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold
+                    onClick = { /* TODO */ }
+                )
+
+                ProfileMenuItem(
+                    text = "Configurações",
+                    onClick = { /* TODO */ }
+                )
+
+                ProfileMenuItem(
+                    text = "Acessibilidade",
+                    onClick = { /* TODO */ }
+                )
+
+                ProfileMenuItem(
+                    text = "Termos e Condições",
+                    onClick = { /* TODO */ }
+                )
+
+                ProfileMenuItem(
+                    text = "Cancelar Conta",
+                    onClick = { /* TODO */ }
                 )
             }
 
-            item {
-                PlatePalCard {
-                    Column(
-                        modifier = Modifier.padding(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        PlatePalTextField(
-                            value = name,
-                            onValueChange = { name = it },
-                            label = "Nome",
-                            placeholder = "Digite seu nome"
-                        )
-
-                        PlatePalTextField(
-                            value = email,
-                            onValueChange = { email = it },
-                            label = "Email",
-                            placeholder = "Digite seu email"
-                        )
-                    }
-                }
-            }
-
-            item {
-                PlatePalCard {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Text(
-                            text = "Estatísticas",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
-                        StatItem("Receitas Favoritas", "0")
-                        StatItem("Receitas Criadas", "0")
-                        StatItem("Tempo Total de Cozinha", "0h")
-                    }
-                }
-            }
-
-            item {
-                PlatePalButton(
-                    text = "Salvar Alterações",
-                    onClick = { }
-                )
-            }
-
-            item {
-                PlatePalButton(
-                    text = "Sair",
-                    onClick = { },
-                    backgroundColor = MaterialTheme.colorScheme.error
-                )
-            }
+            Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
 
 @Composable
-private fun StatItem(label: String, value: String) {
-    Column(
-        modifier = Modifier.padding(vertical = 8.dp)
+private fun ProfileMenuItem(
+    text: String,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .clickable { onClick() },
+        shape = RoundedCornerShape(28.dp),
+        color = Color.White.copy(alpha = 0.9f)
     ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = text,
+                fontSize = 16.sp,
+                color = Color(0xFF5A3A3A),
+                fontWeight = FontWeight.Medium
+            )
+
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowRight,
+                contentDescription = "Ir para $text",
+                tint = Color(0xFF5A3A3A)
+            )
+        }
     }
 }
